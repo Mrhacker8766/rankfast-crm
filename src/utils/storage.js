@@ -55,25 +55,40 @@ export function useLeads() {
     }, []);
 
     const addLead = async (leadDetails) => {
-        const newId = uuidv4();
-        const leadId = generateNextLeadId(leads);
-        const payload = {
-            ...migrateLead(leadDetails),
-            id: newId,
-            leadId,
-            createdAt: serverTimestamp(),
-        };
-        // Use the uuid as the Firestore document ID for consistency
-        await setDoc(doc(db, 'leads', newId), payload);
+        try {
+            const newId = uuidv4();
+            const leadId = generateNextLeadId(leads);
+            const payload = {
+                ...migrateLead(leadDetails),
+                id: newId,
+                leadId,
+                createdAt: serverTimestamp(),
+            };
+            // Use the uuid as the Firestore document ID for consistency
+            await setDoc(doc(db, 'leads', newId), payload);
+        } catch (error) {
+            console.error('Error adding lead:', error);
+            window.alert('Failed to save lead to database. Please check your internet or database permissions.\n\nError: ' + error.message);
+        }
     };
 
     const updateLead = async (id, updates) => {
-        const ref = doc(db, 'leads', id);
-        await updateDoc(ref, { ...updates, updatedAt: serverTimestamp() });
+        try {
+            const ref = doc(db, 'leads', id);
+            await updateDoc(ref, { ...updates, updatedAt: serverTimestamp() });
+        } catch (error) {
+            console.error('Error updating lead:', error);
+            window.alert('Failed to update lead. Error: ' + error.message);
+        }
     };
 
     const deleteLead = async (id) => {
-        await deleteDoc(doc(db, 'leads', id));
+        try {
+            await deleteDoc(doc(db, 'leads', id));
+        } catch (error) {
+            console.error('Error deleting lead:', error);
+            window.alert('Failed to delete lead. Error: ' + error.message);
+        }
     };
 
     const updateStatus = async (id, newStatusType, newStatusValue) => {
@@ -107,16 +122,26 @@ export function useMeetings() {
     }, []);
 
     const addMeeting = async (meetingRecord) => {
-        const newId = meetingRecord.id || uuidv4();
-        await setDoc(doc(db, 'meetings', newId), {
-            ...meetingRecord,
-            id: newId,
-            createdAt: serverTimestamp(),
-        });
+        try {
+            const newId = meetingRecord.id || uuidv4();
+            await setDoc(doc(db, 'meetings', newId), {
+                ...meetingRecord,
+                id: newId,
+                createdAt: serverTimestamp(),
+            });
+        } catch (error) {
+            console.error('Error adding meeting:', error);
+            window.alert('Failed to schedule meeting. Error: ' + error.message);
+        }
     };
 
     const deleteMeeting = async (id) => {
-        await deleteDoc(doc(db, 'meetings', id));
+        try {
+            await deleteDoc(doc(db, 'meetings', id));
+        } catch (error) {
+            console.error('Error deleting meeting:', error);
+            window.alert('Failed to delete meeting. Error: ' + error.message);
+        }
     };
 
     return { meetings, loading, addMeeting, deleteMeeting };

@@ -10,5 +10,13 @@ const firebaseConfig = {
     appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
+// Simple check to see if we have the minimum required config
+export const isConfigValid = !!(firebaseConfig.apiKey && firebaseConfig.projectId);
+
+if (!isConfigValid) {
+    console.error('❌ Firebase configuration is invalid or missing! Check your .env file or Vercel environment variables.');
+}
+
+
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);

@@ -3,6 +3,7 @@ import { LayoutDashboard, Users, KanbanSquare, Settings, ChevronRight } from 'lu
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { useAuth } from '../contexts/AuthContext';
+import { isConfigValid } from '../firebase';
 
 function cn(...inputs) {
     return twMerge(clsx(inputs));
@@ -72,9 +73,19 @@ export default function Sidebar() {
             </div>
 
             <div className="p-4 mt-auto border-t border-slate-100">
-                <div className="bg-slate-50 rounded-xl p-4 flex flex-col items-start">
-                    <p className="text-xs font-medium text-slate-500 mb-1">Rankfast CRM</p>
-                    <p className="text-[10px] text-slate-400">Offline mode enabled</p>
+                <div className="bg-slate-50 rounded-xl p-4 flex flex-col items-start gap-1">
+                    <p className="text-xs font-bold text-slate-800">System Status</p>
+                    {isConfigValid ? (
+                        <div className="flex items-center gap-1.5 py-0.5 px-2 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-100">
+                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider">Live Sync Active</span>
+                        </div>
+                    ) : (
+                        <div className="flex items-center gap-1.5 py-0.5 px-2 bg-red-50 text-red-700 rounded-full border border-red-100">
+                            <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider">Sync Error</span>
+                        </div>
+                    )}
                 </div>
             </div>
         </aside>
