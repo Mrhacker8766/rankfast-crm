@@ -11,10 +11,19 @@ const firebaseConfig = {
 };
 
 // Simple check to see if we have the minimum required config
-export const isConfigValid = !!(firebaseConfig.apiKey && firebaseConfig.projectId);
+const requiredKeys = [
+    'VITE_FIREBASE_API_KEY',
+    'VITE_FIREBASE_PROJECT_ID',
+    'VITE_FIREBASE_AUTH_DOMAIN',
+    'VITE_FIREBASE_APP_ID'
+];
+
+const missingKeys = requiredKeys.filter(key => !import.meta.env[key]);
+export const isConfigValid = missingKeys.length === 0;
 
 if (!isConfigValid) {
-    console.error('❌ Firebase configuration is invalid or missing! Check your .env file or Vercel environment variables.');
+    console.error('❌ Firebase configuration is invalid! Missing keys:', missingKeys.join(', '));
+    console.warn('Current Environment Variables:', import.meta.env);
 }
 
 
