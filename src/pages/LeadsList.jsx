@@ -121,6 +121,15 @@ export default function LeadsList() {
         setSelectedRowIds([]);
     };
 
+    const handleBulkDelete = () => {
+        if (window.confirm(`Are you sure you want to delete ${selectedRowIds.length} leads? This action cannot be undone.`)) {
+            selectedRowIds.forEach(id => {
+                deleteLead(id);
+            });
+            setSelectedRowIds([]);
+        }
+    };
+
     const handleRowClick = (lead) => {
         setSelectedLead(lead);
         setIsModalOpen(true);
@@ -168,6 +177,9 @@ export default function LeadsList() {
                             <span className="text-sm font-bold text-blue-700">{selectedRowIds.length} selected</span>
                             <button onClick={handleExportCSV} className="text-sm border border-blue-200 bg-white hover:bg-blue-100 text-blue-700 px-2 py-1 rounded cursor-pointer transition-colors shadow-sm font-medium">
                                 Export Selected
+                            </button>
+                            <button onClick={handleBulkDelete} className="text-sm border border-red-200 bg-white hover:bg-red-50 text-red-600 px-2 py-1 rounded cursor-pointer transition-colors shadow-sm font-medium">
+                                Delete Selected
                             </button>
                             {currentUser?.role === 'admin' && (
                                 <select onChange={handleBulkAssign} value="" className="text-sm border border-blue-200 bg-white hover:bg-blue-100 text-blue-700 px-2 py-1 rounded cursor-pointer transition-colors shadow-sm font-medium outline-none">

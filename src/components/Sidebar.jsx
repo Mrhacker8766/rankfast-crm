@@ -72,22 +72,6 @@ export default function Sidebar() {
                 </nav>
             </div>
 
-            <div className="p-4 mt-auto border-t border-slate-100">
-                <div className="bg-slate-50 rounded-xl p-4 flex flex-col items-start gap-1">
-                    <p className="text-xs font-bold text-slate-800">System Status</p>
-                    {isConfigValid ? (
-                        <div className="flex items-center gap-1.5 py-0.5 px-2 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-100">
-                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider">Live Sync Active</span>
-                        </div>
-                    ) : (
-                        <div className="flex items-center gap-1.5 py-0.5 px-2 bg-red-50 text-red-700 rounded-full border border-red-100">
-                            <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider">Sync Error</span>
-                        </div>
-                    )}
-                </div>
-            </div>
         </aside>
     );
 }
